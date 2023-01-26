@@ -1,0 +1,193 @@
+[
+    {
+        "id": "756ae3e8a4561e2c",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "755d51d2cf08a2b6",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "192.168.1.4",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "2f2ed74273292365",
+        "type": "protobuf-file",
+        "protopath": "C:\\Users\\olafs\\Downloads\\sparkplug_b.proto",
+        "watchFile": true,
+        "keepCase": false
+    },
+    {
+        "id": "19039aade0ff25bd",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "192.168.1.3",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "3be46fc495b375fc",
+        "type": "mqtt in",
+        "z": "756ae3e8a4561e2c",
+        "name": "",
+        "topic": "ESIEA/grp2",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "755d51d2cf08a2b6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 310,
+        "y": 200,
+        "wires": [
+            [
+                "2003192cdd569489"
+            ]
+        ]
+    },
+    {
+        "id": "2003192cdd569489",
+        "type": "json",
+        "z": "756ae3e8a4561e2c",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 490,
+        "y": 200,
+        "wires": [
+            [
+                "25d521ec2e2dcb66"
+            ]
+        ]
+    },
+    {
+        "id": "25d521ec2e2dcb66",
+        "type": "template",
+        "z": "756ae3e8a4561e2c",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{\n    \"metrics\": [\n        {\n            \"name\": \"Temperature\",\n            \"isNull\": false,\n            \"datatype\": 9,\n            \"floatValue\": {{payload.temperature}}\n        },\n        {\n            \"name\": \"Humidity\",\n            \"isNull\": false,\n            \"datatype\": 9,\n            \"floatValue\": {{payload.humidity}}\n        }\n    ],\n    \"seq\": -1\n}",
+        "output": "json",
+        "x": 660,
+        "y": 200,
+        "wires": [
+            [
+                "77c65d5e9dcbc080"
+            ]
+        ]
+    },
+    {
+        "id": "727b0825b24d5367",
+        "type": "debug",
+        "z": "756ae3e8a4561e2c",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1160,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "77c65d5e9dcbc080",
+        "type": "encode",
+        "z": "756ae3e8a4561e2c",
+        "name": "Sparkplug B encoder",
+        "protofile": "2f2ed74273292365",
+        "protoType": "Payload",
+        "x": 880,
+        "y": 200,
+        "wires": [
+            [
+                "c2f39cafa50baf68",
+                "f6f8774bfc108829"
+            ]
+        ]
+    },
+    {
+        "id": "f6f8774bfc108829",
+        "type": "decode",
+        "z": "756ae3e8a4561e2c",
+        "name": "",
+        "protofile": "2f2ed74273292365",
+        "protoType": "Payload",
+        "x": 920,
+        "y": 320,
+        "wires": [
+            [
+                "727b0825b24d5367"
+            ]
+        ]
+    },
+    {
+        "id": "c2f39cafa50baf68",
+        "type": "mqtt out",
+        "z": "756ae3e8a4561e2c",
+        "name": "",
+        "topic": "spBv1.0/ESIEA/DDATA/raspberry/esp8266_2",
+        "qos": "1",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "19039aade0ff25bd",
+        "x": 1270,
+        "y": 200,
+        "wires": []
+    }
+]
