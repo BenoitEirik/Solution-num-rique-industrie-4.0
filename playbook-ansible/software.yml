@@ -1,0 +1,18 @@
+---
+- name: Check if software is installed
+  hosts: raspberry
+  become: yes
+  tasks:
+  - name: Check if software is installed
+    command: dpkg -s mosquitto
+    register: software_check
+  - name: Sotfware is not installed
+    ansible.builtin.apt: # command to install the package
+      deb: /home/pi/mosquitto_1.4.10-3+deb9u5_arm64.deb
+#    - debug:
+    msg: "soft is installing with deb package"    
+    when: software_check.rc != 0
+#  - name: Software already installed
+  - debug:
+      msg: "soft already installed = ok"
+    when: software_check.rc == 0
